@@ -1,0 +1,11 @@
+	expr.number_priority = 1000000;
+	expr.addOperation (new plus_type <int> ());
+	expr.addOperation (new minus_type <int> ());
+	expr.addOperation (new mul_type <int> ());
+	expr.addOperation (new div_type <int> ());
+	expr.addOperation (new negative_type <int> ());
+	expr.addOperation (new power_type <int> ());
+	expr.addBrackets  (new brackets_type <int> ());
+	expr.addBrackets  (new module_type <int> ());
+	expr.addBrackets  (new sqrt_type <int> ());
+	expr.addFunction  (new sqrt2_type <int> (new solve <int> (expr, parser)));
