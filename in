@@ -19,14 +19,6 @@ operator[4][0]*(a,b)
 	return a*b;
 end
 
-function a ()
-	return 5;
-end
-
-function b ()
-	return 6;
-end
-
-function c ()
-	return 10;
-end
+var a=5;
+var b=6;
+var c=10;

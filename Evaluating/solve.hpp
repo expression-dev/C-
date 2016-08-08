@@ -75,7 +75,7 @@ public:
 
 	T calc (string expr) 
 	{
-    	std::cout << "Expr: " << expr << std::endl;
+    	//std::cout << "Expr: " << expr << std::endl;
 		//std::cout.flush ();
 		if (expr == "")
 		{
@@ -105,9 +105,9 @@ public:
 						else if (expr [first_open_bracket] == ')')
 							brackets --;
 					}
-					std::cout << "CHECK: " << name << " " << i << " " << first_open_bracket << " ";
+					//std::cout << "CHECK: " << name << " " << i << " " << first_open_bracket << " ";
 					i = first_open_bracket - 1;
-					std::cout << i + 1 << std::endl;
+					//std::cout << i + 1 << std::endl;
 					continue;
 				}
 					
@@ -123,7 +123,7 @@ public:
 			else if (all.isOper (expr [i]))
 			{
 				int curr_priority = all.oper [expr [i]]->priority + bonux;
-				std::cout << "Expr: " << expr << "  Curr char: " << expr [i] << " Optimum char: " << expr [pos] << " " << min_priority << curr_priority << std::endl;
+				//std::cout << "Expr: " << expr << "  Curr char: " << expr [i] << " Optimum char: " << expr [pos] << " " << min_priority << curr_priority << std::endl;
 				if (curr_priority == min_priority)
 				{
 					if (pos != -1 and expr [pos] == expr [i] and all.oper [expr [pos]]->right_asociation)
@@ -142,8 +142,8 @@ public:
 		}
 		if (pos == -1) // TODO: parse parameters and solve function
 		{
-			std::cout << "Only function and params" << std::endl;
-			std::cout << expr << std::endl;
+			//std::cout << "Only function and params" << std::endl;
+			//std::cout << expr << std::endl;
 			std::string name1 = "", val = "";
 			int first_open_bracket = 0;
 			for ( ; first_open_bracket < expr.size () and expr [first_open_bracket] != '(' ; first_open_bracket ++)
@@ -171,7 +171,7 @@ public:
 			}
 			ss << calc (val);
 			val = "";
-			std::cout << "Hello, it me: " << ss.str () << std::endl;
+			//std::cout << "Hello, it me: " << ss.str () << std::endl;
 			if (all.func.find (name1) == all.func.end ())
 			{
 				return (*Parse)(name1.c_str ());
@@ -180,7 +180,7 @@ public:
 			std::cout << ans << "\n";
 			return ans;
 		}
-		std::cout << "Expr with divide by operator: " << expr << "\n"; std::cout.flush ();
+		//std::cout << "Expr with divide by operator: " << expr << "\n"; std::cout.flush ();
 		auto cleaned = clean (expr);
 		expr = cleaned.first;
 		vector < int > todo = cleaned.second;

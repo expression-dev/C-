@@ -29,6 +29,10 @@ std::string transform (std::string str)
 			ans += "()";
 			is_name = false;
 		}
+		else if (is_name and str [i] == '(')
+		{
+			is_name = false;
+		}
 		ans += str [i];
 	}
 	if (is_name)
@@ -64,8 +68,8 @@ int main ()
 			to_solve = in.substr (5);
 			try
 			{
-				to_solve = transform (to_solve);
-				std::cout << "Calculated: " << to_solve << " = " << solver.calc (to_solve) << std::endl;
+				std::string to_solve1 = transform (to_solve);
+				std::cout << "Calculated: " << to_solve << " = " << solver.calc (to_solve1) << std::endl;
 			}
 			catch (const char* asdf)
 			{

@@ -13,7 +13,27 @@
 			for (i = 0 ; curr_line [i] != ' ' and curr_line [i] != '[' ; i ++)
 				def += curr_line [i];
 			std::cout << def << std::endl;
-			if (def == "function")
+			if (def == "var")
+			{
+				std::string name = "", val = "";
+				for (i ++ ; curr_line [i] != '=' ; i ++)
+					name += curr_line [i];
+
+				for (i ++ ; curr_line [i] != ';' ; i ++)
+					val += curr_line [i];
+
+				string code = "template <typename T> T f ()\n{\n\treturn " + val + ";\n}";
+expr.addFunction (new function <int> (name, N));
+				std::ofstream out ("/tmp/new_op_fun_br.cpp");
+				out << code << "\n";
+				out.close ();
+				std::stringstream ss;
+				ss << "g++ -O2 -std=c++11 other/base3.cpp -o exec/" << N++ << ".exe";
+				system (ss.str ().c_str ());
+				//std::cout << "------------------------------" << std::endl;
+				goto Start2;
+			}
+			else if (def == "function")
 			{
 				string code = "template <typename T> T f (std::string str)\n{\n ";
 				string name = "";
