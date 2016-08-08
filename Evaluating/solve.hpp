@@ -3,6 +3,7 @@
 #include <utility>
 #include <map>
 #include <vector>
+#include <sstream>
 	
 	using std::string;
 	using std::stack;
@@ -74,7 +75,7 @@ public:
 
 	T calc (string expr) 
 	{
-    	//std::cout << "Expr: " << expr << std::endl;
+    	std::cout << "Expr: " << expr << std::endl;
 		//std::cout.flush ();
 		if (expr == "")
 		{
@@ -96,11 +97,17 @@ public:
 					throw "Undefined digit, operator, function or bracket";
 				else
 				{
-					for ( ; first_open_bracket < expr.size () and expr [first_open_bracket] != ')' ; first_open_bracket ++)
-					{}
-					//std::cout << "CHECK: " << name << " " << i << " " << first_open_bracket << " ";
-					i = first_open_bracket;
-					//std::cout << i << std::endl;
+					int brackets = 1;
+					for (first_open_bracket ++ ; first_open_bracket < expr.size () and brackets != 0 ; first_open_bracket ++)
+					{
+						if (expr [first_open_bracket] == '(')
+							brackets ++;
+						else if (expr [first_open_bracket] == ')')
+							brackets --;
+					}
+					std::cout << "CHECK: " << name << " " << i << " " << first_open_bracket << " ";
+					i = first_open_bracket - 1;
+					std::cout << i + 1 << std::endl;
 					continue;
 				}
 					
@@ -116,7 +123,7 @@ public:
 			else if (all.isOper (expr [i]))
 			{
 				int curr_priority = all.oper [expr [i]]->priority + bonux;
-				//std::cout << "Expr: " << expr << "  Curr char: " << expr [i] << " Optimum char: " << expr [pos] << " " << min_priority << curr_priority << std::endl;
+				std::cout << "Expr: " << expr << "  Curr char: " << expr [i] << " Optimum char: " << expr [pos] << " " << min_priority << curr_priority << std::endl;
 				if (curr_priority == min_priority)
 				{
 					if (pos != -1 and expr [pos] == expr [i] and all.oper [expr [pos]]->right_asociation)
@@ -135,28 +142,45 @@ public:
 		}
 		if (pos == -1) // TODO: parse parameters and solve function
 		{
-			//std::cout << "Expr1: " << expr << "\n"; std::cout.flush ();
-			std::string name1 = "", name = "";
+			std::cout << "Only function and params" << std::endl;
+			std::cout << expr << std::endl;
+			std::string name1 = "", val = "";
 			int first_open_bracket = 0;
 			for ( ; first_open_bracket < expr.size () and expr [first_open_bracket] != '(' ; first_open_bracket ++)
-			{name1 += expr [first_open_bracket];}
+			{
+				name1 += expr [first_open_bracket];
+			}
 			
+			std::stringstream ss;
 			int start = first_open_bracket + 1, br = 0;
-			for (first_open_bracket ++ ; first_open_bracket < expr.size () and expr [first_open_bracket] != ')' ; first_open_bracket ++)
-			{ br ++; 
-				//std::cout << "char: #^&*" << expr [first_open_bracket] << " " << expr [first_open_bracket + 1] << std::endl; 
+			int brackets = 1;
+			for (first_open_bracket ++ ; first_open_bracket < expr.size () and brackets != 0 ; first_open_bracket ++)
+			{
+				if (expr [first_open_bracket] == '(')
+					brackets ++;
+				else if (expr [first_open_bracket] == ')')
+					brackets --;
+				if (expr [first_open_bracket] == ',')
+				{
+					ss << calc (val) << ", ";
+					val = "";
 				}
+				else if (brackets != 0)
+					val += expr [first_open_bracket];
+				br ++;
+			}
+			ss << calc (val);
+			val = "";
+			std::cout << "Hello, it me: " << ss.str () << std::endl;
 			if (all.func.find (name1) == all.func.end ())
 			{
 				return (*Parse)(name1.c_str ());
 			}
-			//std::cout << "Recursive: " << start << " " << first_open_bracket << " " << br << " " << expr.substr (start, first_open_bracket - start) << std::endl;
-			T ans = (*all.func [name1]) (expr.substr (start, br));
-			//std::cout << "Ans: " << ans << "\n";
-			//std::cout.flush ();
+			T ans = (*all.func [name1]) (ss.str ());
+			std::cout << ans << "\n";
 			return ans;
 		}
-		//std::cout << "Expr2: " << expr << "\n"; std::cout.flush ();
+		std::cout << "Expr with divide by operator: " << expr << "\n"; std::cout.flush ();
 		auto cleaned = clean (expr);
 		expr = cleaned.first;
 		vector < int > todo = cleaned.second;

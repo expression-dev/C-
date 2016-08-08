@@ -6,7 +6,7 @@
 		int N = 0;
 	while (!in.eof())
 	{
-		Start:
+		Start1:
 		{
 			getline (in, curr_line);
 			def = "";
@@ -14,6 +14,12 @@
 			for (i = 0 ; curr_line [i] != ' ' and curr_line [i] != '[' ; i ++)
 				def += curr_line [i];
 			std::cout << def << std::endl;
+			if (def == "calc")
+			{
+				std::string name = "";
+				for (i ++ ; curr_line [i] != '=' ; i ++)
+					name += curr_line [i];
+			}
 			if (def == "function")
 			{
 				string code = "template <typename T> T f (std::string str)\n{\n ";
@@ -40,10 +46,10 @@ expr.addFunction (new function <int> (name, N));
 				out << code << "\n";
 				out.close ();
 				std::stringstream ss;
-				ss << "g++ -O2 -Wall -Wextra -std=c++11 other/base0.cpp -o exec/" << N++ << ".exe";
+				ss << "g++ -O2 -std=c++11 other/base0.cpp -o exec/" << N++ << ".exe";
 				system (ss.str ().c_str ());
 				//std::cout << "------------------------------" << std::endl;
-				goto Start;
+				goto Start1;
 			}
 			else if (def == "bracket")
 			{
@@ -77,10 +83,10 @@ expr.addBrackets (new bracket <int> (pair [0], pair [1], priority, N));
 				out << code << "\n";
 				out.close ();
 				std::stringstream ss;
-				ss << "g++ -O2 -Wall -Wextra -std=c++11 other/base1.cpp -o exec/" << N++ << ".exe";
+				ss << "g++ -O2 -std=c++11 other/base1.cpp -o exec/" << N++ << ".exe";
 				system (ss.str ().c_str ());
 				//std::cout << "------------------------------" << std::endl;
-				goto Start;
+				goto Start1;
 			}
 			else if (def == "operator")
 			{
@@ -120,10 +126,10 @@ expr.addOperation (new operation <int> (pair [0], priority, N, right_asociation)
 				out << code << "\n";
 				out.close ();
 				std::stringstream ss;
-				ss << "g++ -O2 -Wall -Wextra -std=c++11 other/base2.cpp -o exec/" << N++ << ".exe";
+				ss << "g++ -O2 -std=c++11 other/base2.cpp -o exec/" << N++ << ".exe";
 				system (ss.str ().c_str ());
 				//std::cout << "------------------------------" << std::endl;
-				goto Start;
+				goto Start1;
 			}
 		}
 	}

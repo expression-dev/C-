@@ -11,13 +11,36 @@ using namespace expr;
 
 #include <fstream>
 #include <sstream>
+int N = 0;
+
+std::string transform (std::string str)
+{
+	std::string ans;
+	bool is_name = false;
+	for (int i = 0 ; i < str.size () ; i ++)
+	{
+		std::cout << is_name << " " << str [i] << " " << str [i + 1] << " " << ans << std::endl;
+		if (('a' <= str [i] and str [i] <= 'z') or ('A' <= str [i] and str [i] <= 'Z'))
+			is_name = true;
+		else if ('0' <= str [i] and str [i] <= '9')
+			is_name = is_name;
+		else if (is_name and str [i] != '(')
+		{
+			ans += "()";
+			is_name = false;
+		}
+		ans += str [i];
+	}
+	if (is_name)
+		ans += "()";
+	return ans;
+}
 
 int main ()
 {
 	expression <int> expr;
-	#include "other/reader.cpp"
-	std::cout << (*expr.func ["sqrt"])("1,2");
-	solve <int> solver (expr, parser);
+	#include "other/reader1.cpp"
+	solve <int> solver = solve <int> (expr, parser);
 	std::string to_solve, in;
 
 	getline (std::cin, in);
@@ -26,15 +49,29 @@ int main ()
 			to_solve += x;
 	while (std::cin)
 	{
-		try
+		if (in == "I want more operations!")
 		{
-			std::cout << "Calculated: " << to_solve << " = " << solver.calc (to_solve) << std::endl;
+			system ("$EDITOR in");
+			#include "other/reader2.cpp"
+			solver = solve <int> (expr, parser);
+			getline (std::cin, in);
+			for (auto& x : in)
+				if (x != ' ')
+					to_solve += x;
 		}
-		catch (const char* asdf)
+		else if (in.substr (0, 4) == "calc")
 		{
-			std::cout << "\n\nError: " << asdf << std::endl;
+			to_solve = in.substr (5);
+			try
+			{
+				to_solve = transform (to_solve);
+				std::cout << "Calculated: " << to_solve << " = " << solver.calc (to_solve) << std::endl;
+			}
+			catch (const char* asdf)
+			{
+				std::cout << "\n\nError: " << asdf << std::endl;
+			}
 		}
-		std::cout << "😕 😭 \n";
 		to_solve = "";
 		getline (std::cin, in);
 		for (auto& x : in)

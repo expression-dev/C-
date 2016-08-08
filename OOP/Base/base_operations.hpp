@@ -10,7 +10,7 @@ namespace expr
 		int num;
 		int priority;
 		char symbol;
-		bool right_asociation; ////!!!! to constructor
+		bool right_asociation;
 		T operator() (std::vector <T> v) const
 		{
 			if (v.size () < 2) //binary operator

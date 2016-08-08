@@ -1,35 +1,32 @@
-function sqrt (str)
-	str += ',';
-	T a, b;
-	bool first = 1;
-	std::string curr;
-	for (int i = 0 ; i < str.size () ; i ++)
-	{
-		if (str [i] == ',')
-		{
-			if (first)
-			{
-				a = atoi (curr.c_str ()); 
-				first = !first;
-			}
-			else
-				b = atoi (curr.c_str ());
-			curr = "";
-		}
-		else
-			curr += str [i];
-	}
-	return a + b;
+function asdf (str)
+	T a = atoi (str.c_str ());
+	return a*a*a;
 end
 
 bracket [4]()(a)
-	return a;
+	return (a);
 end
 
 operator[1][0]+(a,b)
 	return a+b;
 end
 
+operator[1][0]-(a,b)
+	return a-b;
+end
+
 operator[4][0]*(a,b)
 	return a*b;
+end
+
+function a ()
+	return 5;
+end
+
+function b ()
+	return 6;
+end
+
+function c ()
+	return 10;
 end
