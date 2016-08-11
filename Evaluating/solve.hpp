@@ -65,6 +65,105 @@ public:
 		}
 		return {expr, opers};
 	}
+
+	std::string prim (std::string expr)
+	{
+		std::string a, b; char c;
+		int min_priority = all.number_priority, pos = -1;
+		int bonux = 0;
+		for (int i = 0 ; i < (int)expr.size () ; i ++)
+		{
+			if ('a' <= expr [i] and expr [i] <= 'z')
+			{
+
+			}
+			else if ('A' <= expr [i] and expr [i] <= 'Z')
+			{
+
+			}
+			else if ('0' <= expr [i] and expr [i] <= '9')
+			{
+
+			}
+			else if (expr [i] == '(')
+			{
+				bonux += 4;
+			}
+			else if (expr [i] == ')')
+			{
+				bonux -= 4;
+			}
+			else if (((string)("+*/^")).find (expr [i]) == std :: string :: npos)
+			{
+				throw "Undefined digit, operator, function or bracket";
+			}
+			else
+			{
+				int curr_priority = bonux;
+				if (expr [i] == '+') curr_priority += 1;
+				if (expr [i] == '*') curr_priority += 2;
+				if (expr [i] == '/') curr_priority += 2;
+				if (expr [i] == '^') curr_priority += 3;
+				if (curr_priority == min_priority)
+				{
+					if (pos != -1 and expr [pos] == expr [i] and expr [pos] == '^')
+					{
+						pos = pos;
+					}
+					else
+						pos = i;
+				}
+				else if (curr_priority < min_priority)
+				{
+					min_priority = curr_priority;
+					pos = i;
+				}
+			}
+		}
+		if (pos == -1)
+		{
+			return "0";
+		}
+		else if (min_priority > 4)
+		{
+			a = expr.substr (1, pos - 1);
+			b = expr.substr (pos + 1);
+			b.erase (b.size () - 1, 1);
+		}
+		else
+		{
+			std::cout << "pos = " << pos << "\n";
+			a = expr.substr (0, pos);
+			b = expr.substr (pos + 1);
+		}
+		c = expr [pos];
+		if (c == '+')
+		{
+			std::string ap = prim (a), bp = prim (b);
+			if (ap == "0")
+				return bp;
+			else if (bp == "0")
+				return ap;
+			else
+				return prim (a) + " " + c + " " + prim (b); 
+		}
+		else if (c == '*')
+		{
+			std::string ap = prim (a), bp = prim (b);
+			if (ap == "0")
+				return a + " " + bp;
+			else if (bp == "0")
+				return b + " " + ap;
+			else
+				return prim (a) + " " + b + " + " + a + prim (b); 
+		}
+		else if (c == '/')
+			return "(" + prim (a) + " * " + b + " - " + a + " * " + prim (b) + ") / ((" + b + ")^2" + ")";
+		else if (c == '^')
+			return b + " ((" + a + ") ^ (" + b + " - 1))";
+		else
+			return "0";
+	}
 	
 	T subcalc (T a, vector <int> seq)
 	{
@@ -150,7 +249,6 @@ public:
 			{
 				name1 += expr [first_open_bracket];
 			}
-			
 			std::stringstream ss;
 			int start = first_open_bracket + 1, br = 0;
 			int brackets = 1;

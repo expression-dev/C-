@@ -42,6 +42,7 @@ std::string transform (std::string str)
 
 int main ()
 {
+	system ("echo \"<!DOCTYPE html>\n<title>Expression visualizatior</title> <script type=\"text/javascript\" async src=\"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_CHTML\"></script>\" > interface/index.html");
 	expression <int> expr;
 	#include "other/reader1.cpp"
 	solve <int> solver = solve <int> (expr, parser);
@@ -53,6 +54,10 @@ int main ()
 			to_solve += x;
 	while (std::cin)
 	{
+		if (in == "No" or in == "end")
+		{
+			break;
+		}
 		if (in == "I want more operations!")
 		{
 			system ("$EDITOR in");
@@ -63,13 +68,30 @@ int main ()
 				if (x != ' ')
 					to_solve += x;
 		}
+		else if (to_solve [to_solve.size () - 1] == '\'')
+		{
+			try
+			{
+				std::stringstream ss;
+				ss << "echo \"<big>Simplified: <big><big>\\`" << to_solve.substr (4) << " = " << solver.prim (to_solve.substr (5, to_solve.size () - 7)) << "\\` </big></big></big> <br><hr>\" >> interface/index.html\n";
+				std::cout << ss.str () << "\n";
+				system (ss.str ().c_str ());
+			}
+			catch (const char* asdf)
+			{
+				std::cout << "\n\nError: " << asdf << std::endl;
+			}
+		}
 		else if (in.substr (0, 4) == "calc")
 		{
 			to_solve = in.substr (5);
 			try
 			{
 				std::string to_solve1 = transform (to_solve);
-				std::cout << "Calculated: " << to_solve << " = " << solver.calc (to_solve1) << std::endl;
+				std::stringstream ss;
+				ss << "echo \"<big>Calculated: <big><big>\\`" << to_solve << " = " << solver.calc (to_solve1) << "\\` </big></big></big> <br><hr>\" >> interface/index.html\n";
+				std::cout << ss.str () << "\n";
+				system (ss.str ().c_str ());
 			}
 			catch (const char* asdf)
 			{
@@ -77,6 +99,7 @@ int main ()
 			}
 		}
 		to_solve = "";
+		std::cout << "Next?\n";
 		getline (std::cin, in);
 		for (auto& x : in)
 			if (x != ' ')
