@@ -23,3 +23,8 @@ var a=5;
 var b=6;
 var c=10;
 
+function kris (str)
+	T a = atoi (str.c_str ());
+	return a*a*a;
+end
+
