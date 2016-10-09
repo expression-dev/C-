@@ -84,7 +84,6 @@ namespace expr
 			this->name = name;
 		}
 	};
-	//pavel.panov@gmail.com
 	
 	template <typename T>
 	class expression
